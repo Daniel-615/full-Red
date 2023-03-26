@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Red Social </title>
+    <style>
+      /* Estilos para el menú de navegación */
+      nav {
+        background-color: #333;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+      
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+      }
+      
+      nav ul li {
+        margin-right: 10px;
+      }
+      
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px;
+        transition: all 0.3s ease;
+      }
+      
+      nav ul li a:hover {
+        background-color: #555;
+        transform: scale(1.1);
+      }
+      
+      .menu-icon {
+        display: none;
+        font-size: 2em;
+        cursor: pointer;
+      }
+      
+      /* Estilos para el mensaje de bienvenida */
+      .welcome {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        animation: fadein 2s ease;
+      }
+      
+      .welcome h1 {
+        font-size: 5em;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .welcome p {
+        font-size: 2em;
+        margin-top: 20px;
+      }
+      
+      @keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      
+      @media only screen and (max-width: 600px) {
+        nav ul {
+          display: none;
+        }
+        
+        .menu-icon {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  
+  <body>
+    <!-- Menú de navegación -->
+    <nav>
+        <a href="/">APIRED</a>
+      <ul>
+        <li><a href="https://futbolparatodos.online/es/">Inicio</a></li>
+        <li><a href="#">Acerca de</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+      <div class="menu-icon">&#9776;</div>
+    </nav>
+    
+    <!-- Mensaje de bienvenida -->
+    <div class="welcome">
+      <h1>Bienvenido</h1>
+    <p>Esto es solo el inicio....</p>
+    <p>Gracias por visitar mi sitio web. Espero que disfrutes tu estadía .</p>
+    </div>
+  </body>
+</html>
