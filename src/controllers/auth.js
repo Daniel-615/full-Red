@@ -18,7 +18,7 @@ export const tokengenerated = async (req,res)=>{
     //const token = jwt.sign(payload, 'claveSecreta');
     const token=jwt.sign({
       payload,
-      exp: Date.now()+60*1000
+      exp: Date.now()+600*1000
     },'claveSecreta')
     // Enviar el token en la respuesta del servidor
     res.json({ token });

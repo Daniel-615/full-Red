@@ -10,8 +10,9 @@ router.post('/signup',passport.authenticate('local-signup',{
     failureRedirect: '/',
     passReqToCallback: true
 }));
+
 //json-viewer
-router.get('/json-viewer',verificarToken,getUsuarios);
+router.get('/json-viewer',getUsuarios);
 router.post('/json-viewer',tokengenerated);
 
 //ruta logout

@@ -7,9 +7,12 @@ import {comment} from '../comment.js';
 import {post} from '../post.js';
 
 
+users.hasMany(follower, { as: "Followings", foreignKey: "followerId" });  //seguidor
+follower.belongsTo(users, { as: "Follower", foreignKey: "followerId" });
+users.hasMany(follower, { as: "Followers", foreignKey: "userId" }); //seguido
+follower.belongsTo(users, { as: "Following", foreignKey: "userId" });
+
 users.hasMany(post);
-users.hasMany(follower, { as: 'Followers' });
-users.hasMany(follower, { as: 'Following' });
 users.belongsToMany(post, { through: 'LikedPosts' });
 users.hasMany(comment);
 
@@ -17,9 +20,9 @@ post.belongsTo(users);
 post.belongsToMany(users, { through: 'Likes' });
 post.hasMany(comment);
 
-follower.belongsTo(users, { as: 'Follower' });
-follower.belongsTo(users, { as: 'Following' });
 
+
+//table like
 like.belongsTo(users);
 like.belongsTo(post);
 

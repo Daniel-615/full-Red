@@ -35,10 +35,12 @@ import './models/relations/relations.js';
 
 
 // routes
-import users from './routes/users.routes.js';
-app.use(users);
-import post from './routes/general.routes.js';
-app.use(post);
+import passporT from './routes/passport.routes.js';
+app.use(passporT);
+import usuarios from './routes/usuarios.routes.js';
+app.use(usuarios);
+import pubcom from './routes/pub.com.routes.js'
+app.use(pubcom);
 
 // controllers
 import './controllers/passport.js';
