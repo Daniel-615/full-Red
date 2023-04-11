@@ -4,9 +4,9 @@ const router=Router();
 //devuelve la información de un usuario
 router.get('/api/users/:id',getInfoUser);
 //actualiza la información de un usuario
-router.put('/api/users/:id',UpdateInfoUser);
+router.put('/api/users/:userId',UpdateInfoUser);
 //ruta reset password
-router.put('/api/users/resetpassword/:id',resetpassword);
+router.put('/api/users/resetpassword/:userId',resetpassword);
 //elimina la cuenta de un usuario
 router.delete('/api/users/:id',DeleteAccUser);
 //devuelve las publicaciones de un usuario

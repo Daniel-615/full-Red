@@ -8,7 +8,7 @@ export const getInfoUser=async(req,res)=>{
     const {id}=req.params
     try {
         const data=await users.findOne({
-            where: {id:id},
+            where: {userId:id},
             attributes: {
               exclude: ['password','createdAt','updatedAt']
             }
@@ -21,34 +21,34 @@ export const getInfoUser=async(req,res)=>{
 };
 
 export const UpdateInfoUser=async(req,res)=>{
-  const {id}= req.params;
+  const {userId}= req.params;
   const {username,email,bio,profilePicture}= req.body;
-  if(!id || !username ||!email ||!bio || !profilePicture){
+  if(!userId || !username ||!email ||!bio || !profilePicture){
     return res.json({error: 'Parameters are not valid'});
   }
   try {
-    const usuarios= await users.findByPk(id);
+    const usuarios= await users.findByPk(userId);
     if(!usuarios){
       return res.status(404).json({message: "Account not found"});
     }
-    await users.update({username,email,bio,profilePicture}, {where: {id}});
-    res.send(`The info from user ${id} has been updated`);
+    await users.update({username,email,bio,profilePicture}, {where: {userId}});
+    res.status(201).json(`The info from user ${userId} has been updated`);
   } catch (error) {
     return res.json({message: error.message});
   }
 }
 
 export const resetpassword=async(req,res)=>{
-  const {id}= req.params;
+  const {userId}= req.params;
   let {password}= req.body;
   try {
     const salt=await bcrypt.genSalt(8);
     password= await bcrypt.hash(password,salt);
-    const usuarios= await users.findByPk(id);
+    const usuarios= await users.findByPk(userId);
     if(!usuarios){
       return res.status(404).json({ message: "Account not found" });
     }
-    await users.update({password}, {where: {id}})
+    await users.update({ password }, { where: {userId} });
     res.send('Password has been updated');
   } catch (error) {
      return res.json({message:error.message});  
@@ -60,20 +60,19 @@ export const DeleteAccUser=async(req,res)=>{
         const {id}=req.params;
         await users.destroy({
             where: {
-                id,
+                userId: id,
             },
         })
-        res.json(200).json(`The account from the user ${id} has been deleted succesfully`);   
+        return res.status(200).json(`The account from the user ${id} has been deleted succesfully`);   
     } catch (error) {
       return res.json({message:error.message});   
     }   
 }
-//esto hay que mejorarlo
 export const getPubUser = async (req, res) => {
   const { id } = req.params;
   try {
     const data = await post.findAll({
-      where: { userId: id }, 
+      where: { userUserId: id }, 
       exclude: ['createdAt','updatedAt'],
     });
     res.json(data);
@@ -87,14 +86,15 @@ export const getFollowersUser = async (req, res) => {
 
   try {
     const user = await users.findOne({
-      where: { id },
+      where: { userId: id },
       include: {
         model: follower,
         as: "Followers",
+        attributes: ['id','followerId','userId'],
         include: {
           model: users,
           as: "Follower",
-          attributes: ["id", "username", "bio"],
+          attributes: ["userId", "username", "bio"],
         },
       },
     });
@@ -103,7 +103,7 @@ export const getFollowersUser = async (req, res) => {
       return res.status(404).json({ error: "User not found." });
     }
 
-    res.json(user.Followers);
+    res.status(200).json(user.Followers);
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -114,14 +114,15 @@ export const getFollowingUser = async (req, res) => {
 
   try {
     const user = await users.findOne({
-      where: { id },
+      where: { userId: id },
       include: {
         model: follower,
         as: "Followings",
+        attributes: ['id','followerId','userId'],
         include: {
           model: users,
           as: "Following",
-          attributes: ["id", "username", "bio"],
+          attributes: ["userId", "username", "bio"],
         },
       },
     });
@@ -149,10 +150,10 @@ export const postFollow = async (req, res) => {
     // buscar el usuario a seguir y el usuario que sigue en la base de datos
     const [userToFollow, userFollowing] = await Promise.all([
       users.findOne({
-        where: { id },
+        where: { userId: id },
       }),
       users.findOne({
-        where: { id: followerId },
+        where: { userId: followerId },
       }),
     ]);
     if (!userToFollow || !userFollowing) {

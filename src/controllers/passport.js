@@ -3,11 +3,11 @@ import LocalStrategy from 'passport-local';
 import bcrypt from 'bcryptjs';
 import { users } from "../models/users.js";
 passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user.userId);
 });
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await users.findByPk(id);
+    const user = await users.findByPk(id, { primaryKey: 'userId' });
     done(null, user);
   } catch (error) {
     done(error);
@@ -22,7 +22,7 @@ passport.use('local-login',new LocalStrategy({
   
     // Buscar el usuario en la base de datos
      const user = await users.findOne({
-      attributes: ['username', 'id', 'password'],
+      attributes: ['username', 'userId', 'password'],
       where: { username: username }
     });
 
@@ -65,9 +65,9 @@ passport.use('local-signup',new LocalStrategy({
       const salt=await bcrypt.genSalt(8);
       password= await bcrypt.hash(password,salt);
   
-      //comprobar si el usuaruo no existe
+      //comprobar si el usuario no existe
       const user = await users.findOne({
-        attributes: ['username', 'id', 'password'],
+        attributes: ['username', 'userId', 'password'],
         where: { username: username }
       });
       if(user){

@@ -1,20 +1,25 @@
 import jwt from 'jsonwebtoken';
 import { users} from "../models/users.js";
+import bcrypt from 'bcryptjs';
 // // Generar un token para el usuario autenticado
 export const tokengenerated = async (req,res)=>{
-    const {username}=req.body;
-    if(!username){
-        return res.json({error: 'El campo username se encuentra vacio'});
+    const {username, passworduser}=req.body;
+    if(!username || !passworduser){
+        return res.json({error: 'El campo username o passworduser se encuentra vacio'});
     }
     const user=await users.findOne({
-    attributes: ['username', 'id', 'password'],
-    where: { username: username }
+    attributes: ['username', 'userId', 'password'],
+    where: { username: username}
     });
     if (!user) {
         return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    const { usernames, id, password } = user;
-    const payload = { usernames, id, password };
+    const isValidPassword = await bcrypt.compare(passworduser, user.password);
+    if(!isValidPassword){
+      return res.status(404).json({error: 'Password is incorrect'});
+    }
+    const { usernames, userId, password } = user;
+    const payload = { usernames, userId, password };
     //const token = jwt.sign(payload, 'claveSecreta');
     const token=jwt.sign({
       payload,

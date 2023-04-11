@@ -3,10 +3,10 @@ import {sequelize} from './database/database.js';
 //models
 import './models/users.js';
 import './models/post.js';
-import './models/like.js';
 import './models/comment.js';
 import './models/follower.js';
-import './models/LikedPosts.js';
+import './models/like.js';
+import './models/likedposts.js';
 
 import express from 'express';
 import session from 'express-session';
